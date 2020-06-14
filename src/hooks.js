@@ -5,6 +5,7 @@ export const useAnimatedScale = (scGap, delay) => {
     const [scale, setScale] = useState(0)
     const [animated, setAnimated] = useState(false)
     return {
+        scale,
         start() {
             if (!animated) {
                 setAnimated(true)
@@ -48,17 +49,19 @@ export const useStyle = (scale, w, h) => {
     const position = 'absolute'
     const background = '#3F51B5'
     const size = Math.min(w, h) / 8
+    const parts = 3
     return {
         getBlockStyle(i) {
-            const sciy = divideScale(sf, Math.floor(i / 2), 3)
+            const sciy = divideScale(sf, Math.floor(i / 2), parts + 1)
             const sy2 = Math.floor(i / 2)
-            const scix = divideScale(sf, i, 3)
+            const scix = divideScale(sf, i, parts + 1)
             const si = i % 2
             const sy = Math.floor((i + 1) / 2)
-            const width = `${size + (w - size) * scix * sy}px`
-            const height = `${size + (h - size) * si * scix}px`
+            console.log("size, sciy, sy2, sy, si, scix, sf", size, sciy, sy2, sy, si, scix, sf)
+            const width = `${size + (w - size) * scix * si}px`
+            const height = `${size + (h - size) * (1 - si) * scix}px`
             const top = '0px'
-            const left = `${(size + (w - size) * sciy) * sy2}px`
+            const left = `${((w - size) * sciy) * sy2}px`
             return {position, top, left, width, height, background}
         }
     }
